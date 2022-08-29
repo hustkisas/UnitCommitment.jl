@@ -18,10 +18,36 @@
 
 
 ## Power Systems and Unit Commitment 
-Unit commitment (UC) is essentially to schedule energy production of energy generation units in an electrcially connected system to meet energy demand in every time instance in a most cost-effective way, while satisfying security and reliability requirements. 
+Unit commitment (UC) is essentially to schedule energy production of energy generation units in an electrcially connected system to meet energy demand in every time instance in a most cost-effective way, while satisfying security and reliability requirements. Some variants of UC include security constraints, called security-constrained UC (or SCUC). In this package, UC specifically refers to SCUC. 
 ### Power systems
+A power system is a set of energy components that electrically connected, which mostly composes of generation side, demand side, and the the transmission network that connect the two sides. Figure 1 shows a power system on a conceptual level. 
+<center>
+    <img src="./docs/src/assets/powersystem.png" style="max-width: 100px"/>
+    <div><b>Figure 1.</b> Power system on a conceptual level.</div>
+    <br/>
+</center>
+
+* **Generation** The generation side consists of various energy generating units include nuclear generators, thermal generators, hydropower generators, renewable generators (e.g., wind farms, solar farms, marine energy generators, etc.), etc. Energy storages (e.g., pumphydro, batteries, fly wheels, etc.) are also considered on the generation side.
+* **Demand** The demand side traditionally refers to the electricity comsummed by all sorts of electricity costumers, which is also often called as 'electricity load' or 'load'. In recent years, significant amounts of distributed energy resources (DERs) have been integrated into the grid, mostly behind the meter such as roof-top solar PV systems. Demand/load is not simply electricity comsumption anymore. In some days, DERs produce excessive electricity and demand/load becomes a negative number, indicating they supply power back to the grid.
+* **Transmission network** The generation and demand sides are connected by electricity delivery network, such as transmission lines and transformers, so that energy can flow from one place to another. The electricity delivery network consists of transmission networks (higher-voltage networks that move energy from one region to another) and distribution network. (lower-voltage network thats distribute energy locally to customers). In transmission system analysis (such as UC), a distribution network is usually aggregated into a single node in the transmission network. 
+Note that power systems also have many other components such as protection, measurement, control, communication system, etc., which are not considered in the conceptual illustraion above. Fundemental physics that govern power systems include [Kirchhoff's laws], [Dynamical Theory of the Electromagnetic Field], and [Electromechanics].
+
+[Kirchhoff's laws]: https://en.wikipedia.org/wiki/Kirchhoff%27s_circuit_laws
+[Dynamical Theory of the Electromagnetic Field]: https://en.wikipedia.org/wiki/A_Dynamical_Theory_of_the_Electromagnetic_Field
+[Electromechanics]: https://en.wikipedia.org/wiki/Electromechanics
+
 ### Unit commitment
+UC is the decision to determine the scheduling of energy generation components to meet electricity demand while satisfying security requirements. A unit refers to a energy generating component. Although there are various types of energy generating components, their operations can be described generally as (1) whether the component should be turned on and (2) how much power output it should produce. The two operations are the major decisions in a UC. The various units also share common operational charateristics, such as minimal or maximal output limits and ramping limits (how fast it can change its power output). 
+
+The objective of UC is usually minimizing the cost of production. The costs include energy production cost, i.e., the fuel burned to produce energy, and the startup cost, i.e., reheating and extra maintenance to mitigate the effects of thermal stress, which could depend on how long the generator has been offline. 
+
+The constraints of UC consists of physical operation limits of a generator, generation-demand balance, and security requirements. Physical operation limits include min/max output levels, minimum up/down time, ramping limits, etc. Generation-demand balance requires the energy produced at each time interval must equal demand. Security requirements include transmission line thermal limits, N-1 security constraints, contingency reserves, etc. 
+
+The most popular approach used by industry nowadays to solve a UC is to model it as a mixed-integer linear programming problem and solve it with commercial MIP solvers. 
+
 ### Applications of UC
+
+
 
 ## Package Components
 

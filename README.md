@@ -47,6 +47,11 @@ The most popular approach used by industry nowadays to solve a UC is to model it
 
 ### Applications of UC
 
+UC is one of the fundemental optimization problems in power systems and has been widely used in operations, planning, and electricity markets. 
+
+In electricity markets, bid offers for producing and purchasing electricity are submitted to independent system operators (ISOs) every night. ISOs then solve a day-ahead UC within a time window, usually 30 minutes, and use the solution to determine which generators will be committed and the price of electricity. In real time, ISOs solve UC every couple of minutes (e.g., 15 minutes) to determine generator commitment and real-time energy pricing. Considering the $400 billion electricity market size annually in U.S. alone, UC is inarguably one of the most important problems in power sector. 
+
+In system expansion planning, e.g., constructing a new transmission line or installing new generators, UCs are solved under various future scenarios with different load forecasting and renewable integration levels to analyze econoimc and reliability impacts. 
 
 
 ## Package Components

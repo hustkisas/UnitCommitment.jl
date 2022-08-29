@@ -16,6 +16,13 @@
 
 **UnitCommitment.jl** (UC.jl) is an optimization package for the Security-Constrained Unit Commitment Problem (SCUC), a fundamental optimization problem in power systems used, for example, to clear the day-ahead electricity markets. The package provides benchmark instances for the problem and Julia/JuMP implementations of state-of-the-art mixed-integer programming formulations.
 
+
+## Power Systems and Unit Commitment 
+Unit commitment (UC) is essentially to schedule energy production of energy generation units in an electrcially connected system to meet energy demand in every time instance in a most cost-effective way, while satisfying security and reliability requirements. 
+### Power systems
+### Unit commitment
+### Applications of UC
+
 ## Package Components
 
 * **Data Format:** The package proposes an extensible and fully-documented JSON-based data format for SCUC, developed in collaboration with Independent System Operators (ISOs), which describes the most important aspects of the problem. The format supports the most common generator characteristics (including ramping, piecewise-linear production cost curves and time-dependent startup costs), as well as operating reserves, price-sensitive loads, transmission networks and contingencies.

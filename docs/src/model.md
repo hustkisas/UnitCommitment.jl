@@ -13,7 +13,7 @@ Name | Symbol | Description | Unit
 `is_on[g,t]` | $u_{g}(t)$ | True if generator `g` is on at time `t`. | Binary
 `switch_on[g,t]` | $v_{g}(t)$ | True is generator `g` switches on at time `t`. | Binary
 `switch_off[g,t]` | $w_{g}(t)$ | True if generator `g` switches off at time `t`. | Binary
-`prod_above[g,t]` |$p'_{g}(t)$ | Amount of power produced by generator `g` above its minimum power output at time `t`. For example, if the minimum power of generator `g` is 100 MW and `g` is producing 115 MW of power at time `t`, then `prod_above[g,t]` equals `15.0`. | MW
+`prod_above[g,t]` |$p'_{g}(t)$ | Amount of power produced by generator `g` above its minimum power output ($p_g^{MIN}$) at time `t`. For example, if the minimum power of generator `g` is 100 MW and `g` is producing 115 MW of power at time `t`, then `prod_above[g,t]` equals `15.0`. | MW
 `segprod[g,t,k]` | $p^k_g(t)$ | Amount of power from piecewise linear segment `k` produced by generator `g` at time `t`. For example, if cost curve for generator `g` is defined by the points `(100, 1400)`, `(110, 1600)`, `(130, 2200)` and `(135, 2400)`, and if the generator is producing 115 MW of power at time `t`, then `segprod[g,t,:]` equals `[10.0, 5.0, 0.0]`.| MW
 `reserve[r,g,t]` | $r_g(t)$ | Amount of reserve `r` provided by unit `g` at time `t`. | MW
 `startup[g,t,s]` | $\delta^s_g(t)$ | True if generator `g` switches on at time `t` incurring start-up costs from start-up category `s`. | Binary
@@ -47,12 +47,35 @@ Name | Symbol | Description | Unit
 Objective function
 ------------------
 
-TODO
+The objective function is to minimize total costs that include: 
+
+(1) <ins>power generation cost</ins>
+
+When generator $g$ output power to the grid, the power generation cost is the feul cost it burns. In reality, generation cost is a nonlinear function of power output $p_g(t)$, not neccessarily a convex function. But for the sake of computational efficiency, producers are required to submit production cost curve in a convex function. Therefore, the production cost for generator $g$ is $c_g^0p_g^{min} + \sum_{k\in K}c_g^k p_g^k(t)$. 
+
+
+
+(2) <ins>generator startup cost</ins>
+When generator $g$ becomes online after it has been offline for a while, the generator needs to reheat and prepare to produce power, incurring a time-dependent costs, e.g., the longer it is offline, the larger the startup cost is. We use $\delta_g^s(t)$ to indicate whether the generator $g$ has incurred a startup cost $\delta_g^s$ of category $s$ in time period $t$. The startup cost in period $t$ for generator $g$ is $\sum_{s\in S} C^{s}_g\delta_g^s(t)$. Additional logical constraints are needed to associate $\delta^s_g(t)$ with $u_g$ to identify whether a startup cost is incurred. 
+
 
 Constraints
 -----------
+### Startup and shutdown 
 
-TODO
+Auxilary variables $v_g(t)$ and $w_g(t)$ are used to identify whether generator $g$ is turned on or shut down in time $t$, respectively. The following constraints build the logic between the three variables:
+
+$u(t)-u(t-1) = v(t)-w(t)$
+
+### Min up/down constraints
+When generator $g$ is started, it must remain online for a certain amount of time; similarly for the shut down events: 
+
+$$\sum_{i=t-UT+1}^t v(i)\le u(t),$$
+
+indicating that, generator $g$ must be on if it has been turned on in any of the previous $UT$ time periods. Similarly, 
+
+$$\sum_{i=t-DT+1}^t w(i)\le 1-u(t).$$
+
 
 
 Inspecting and modifying the model
